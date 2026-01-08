@@ -17,6 +17,8 @@
       background: #0a0a0a;
       color: #fff;
       overflow-x: hidden;
+      line-height: 1.6;
+      word-break: break-word;
     }
     
     #canvas3d {
@@ -129,7 +131,7 @@
     }
     
     .glitch {
-      font-size: 5rem;
+      font-size: clamp(2rem, 8vw, 5rem);
       font-weight: 700;
       text-transform: uppercase;
       position: relative;
@@ -190,7 +192,7 @@
     }
     
     .hero-description {
-      font-size: 1.1rem;
+      font-size: clamp(1rem, 3vw, 1.1rem);
       line-height: 1.8;
       margin-bottom: 3rem;
       color: #b3b3b3;
@@ -588,6 +590,7 @@
       
       section {
         padding: 4rem 1rem;
+        min-height: auto;
       }
       
       .cta-buttons {
@@ -617,6 +620,10 @@
       p {
         font-size: 0.9rem;
       }
+      
+      .project-card, .skill-card {
+        max-width: 100%;
+      }
     }
     
     @media (max-width: 480px) {
@@ -634,6 +641,7 @@
       
       section {
         padding: 3rem 1rem;
+        min-height: auto;
       }
       
       .logo {
@@ -650,6 +658,10 @@
       
       p {
         font-size: 0.85rem;
+      }
+      
+      .project-card, .skill-card {
+        max-width: 100%;
       }
     }
   </style>
