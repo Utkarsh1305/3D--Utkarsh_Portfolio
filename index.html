@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -951,6 +951,946 @@
       });
     });
     
+    // Three.js Scene
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('canvas3d'), alpha: true });
+    
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    camera.position.z = 5;
+    
+    // Create particle system
+    const particlesGeometry = new THREE.BufferGeometry(); -->
+
+
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Utkarsh Dubey - Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background: #0a0a0a;
+      color: #fff;
+      overflow-x: hidden;
+    }
+    
+    #canvas3d {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+    
+    .content-wrapper {
+      position: relative;
+      z-index: 1;
+    }
+    
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      padding: 1rem 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(10, 10, 10, 0.95);
+      backdrop-filter: blur(20px);
+      z-index: 100;
+      border-bottom: 1px solid rgba(0, 255, 204, 0.1);
+    }
+    
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #00ffcc 0%, #00b894 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      list-style: none;
+    }
+    
+    .nav-links a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s;
+      position: relative;
+      font-size: 0.9rem;
+    }
+    
+    .nav-links a:hover {
+      color: #00ffcc;
+    }
+    
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: #00ffcc;
+      transition: width 0.3s;
+    }
+    
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+    
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      color: #00ffcc;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+    
+    section {
+      min-height: 100vh;
+      padding: 5rem 5%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    @media (max-width: 768px) {
+      section {
+        padding: 4rem 1.5rem;
+        min-height: auto;
+      }
+    }
+    
+    .hero {
+      text-align: center;
+      animation: fadeInUp 1s ease-out;
+    }
+    
+    .hero-content {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    
+    .glitch {
+      font-size: 5rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      position: relative;
+      margin-bottom: 1rem;
+      animation: glitch 3s infinite;
+    }
+    
+    .glitch::before,
+    .glitch::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+    
+    .glitch::before {
+      animation: glitch-1 2s infinite;
+      clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+      transform: translate(-0.025em, -0.0125em);
+      opacity: 0.8;
+    }
+    
+    .glitch::after {
+      animation: glitch-2 2s infinite;
+      clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
+      transform: translate(0.025em, 0.0125em);
+      opacity: 0.8;
+    }
+    
+    @keyframes glitch {
+      0%, 100% { text-shadow: 0.025em 0 0 #00ffcc, -0.025em -0.025em 0 #ff00de; }
+      14% { text-shadow: 0.025em 0 0 #00ffcc, -0.025em -0.025em 0 #ff00de; }
+      15% { text-shadow: -0.025em -0.025em 0 #00ffcc, 0.025em 0.025em 0 #ff00de; }
+      49% { text-shadow: -0.025em -0.025em 0 #00ffcc, 0.025em 0.025em 0 #ff00de; }
+      50% { text-shadow: 0.025em 0.025em 0 #00ffcc, -0.025em 0 0 #ff00de; }
+      99% { text-shadow: 0.025em 0.025em 0 #00ffcc, -0.025em 0 0 #ff00de; }
+    }
+    
+    @keyframes glitch-1 {
+      0% { clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%); transform: translate(0); }
+      10% { clip-path: polygon(0 15%, 100% 15%, 100% 60%, 0 60%); transform: translate(-0.025em, 0.0125em); }
+      20% { clip-path: polygon(0 25%, 100% 25%, 100% 85%, 0 85%); transform: translate(0.025em, -0.0125em); }
+    }
+    
+    @keyframes glitch-2 {
+      0% { clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%); transform: translate(0); }
+      10% { clip-path: polygon(0 70%, 100% 70%, 100% 100%, 0 100%); transform: translate(0.025em, 0.0125em); }
+      20% { clip-path: polygon(0 40%, 100% 40%, 100% 95%, 0 95%); transform: translate(-0.025em, -0.0125em); }
+    }
+    
+    .subtitle {
+      font-size: 1.5rem;
+      color: #00ffcc;
+      margin-bottom: 2rem;
+      font-weight: 400;
+    }
+    
+    .hero-description {
+      font-size: 1.1rem;
+      line-height: 1.8;
+      margin-bottom: 3rem;
+      color: #b3b3b3;
+    }
+    
+    .cta-buttons {
+      display: flex;
+      gap: 1.5rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    
+    .btn {
+      padding: 1rem 2.5rem;
+      border: none;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-decoration: none;
+      display: inline-block;
+      font-family: 'Space Grotesk', sans-serif;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, #00ffcc 0%, #00b894 100%);
+      color: #0a0a0a;
+      box-shadow: 0 10px 30px rgba(0, 255, 204, 0.3);
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 40px rgba(0, 255, 204, 0.5);
+    }
+    
+    .btn-secondary {
+      background: transparent;
+      color: #00ffcc;
+      border: 2px solid #00ffcc;
+    }
+    
+    .btn-secondary:hover {
+      background: rgba(0, 255, 204, 0.1);
+      transform: translateY(-3px);
+    }
+    
+    .section-title {
+      font-size: 3rem;
+      margin-bottom: 3rem;
+      text-align: center;
+      background: linear-gradient(135deg, #fff 0%, #00ffcc 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .about-content {
+      max-width: 1200px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+    
+    .about-text {
+      font-size: 1.1rem;
+      line-height: 1.8;
+      color: #b3b3b3;
+    }
+    
+    .about-stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+    }
+    
+    .stat-card {
+      background: rgba(255, 255, 255, 0.03);
+      padding: 2rem;
+      border-radius: 15px;
+      border: 1px solid rgba(0, 255, 204, 0.2);
+      text-align: center;
+      transition: all 0.3s;
+    }
+    
+    .stat-card:hover {
+      transform: translateY(-5px);
+      border-color: #00ffcc;
+      box-shadow: 0 10px 30px rgba(0, 255, 204, 0.2);
+    }
+    
+    .stat-number {
+      font-size: 3rem;
+      font-weight: 700;
+      color: #00ffcc;
+      margin-bottom: 0.5rem;
+    }
+    
+    .stat-label {
+      font-size: 1rem;
+      color: #b3b3b3;
+    }
+    
+    .experience-timeline {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    
+    .timeline-item {
+      position: relative;
+      padding-left: 3rem;
+      margin-bottom: 3rem;
+      border-left: 2px solid rgba(0, 255, 204, 0.3);
+    }
+    
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -8px;
+      top: 0;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background: #00ffcc;
+      box-shadow: 0 0 20px rgba(0, 255, 204, 0.8);
+    }
+    
+    .timeline-content {
+      background: rgba(255, 255, 255, 0.03);
+      padding: 2rem;
+      border-radius: 15px;
+      border: 1px solid rgba(0, 255, 204, 0.2);
+      transition: all 0.3s;
+    }
+    
+    .timeline-content:hover {
+      border-color: #00ffcc;
+      transform: translateX(10px);
+    }
+    
+    .timeline-title {
+      font-size: 1.5rem;
+      color: #00ffcc;
+      margin-bottom: 0.5rem;
+    }
+    
+    .timeline-date {
+      color: #b3b3b3;
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+    }
+    
+    .timeline-description {
+      color: #b3b3b3;
+      line-height: 1.8;
+      margin-bottom: 1rem;
+    }
+    
+    .timeline-points {
+      list-style: none;
+      padding-left: 0;
+    }
+    
+    .timeline-points li {
+      color: #b3b3b3;
+      margin-bottom: 0.8rem;
+      padding-left: 1.5rem;
+      position: relative;
+      line-height: 1.6;
+    }
+    
+    .timeline-points li::before {
+      content: '▹';
+      position: absolute;
+      left: 0;
+      color: #00ffcc;
+      font-weight: bold;
+    }
+    
+    .skills-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+    
+    .skill-card {
+      background: rgba(255, 255, 255, 0.03);
+      padding: 2rem;
+      border-radius: 15px;
+      border: 1px solid rgba(0, 255, 204, 0.2);
+      transition: all 0.3s;
+    }
+    
+    .skill-card:hover {
+      transform: translateY(-10px);
+      border-color: #00ffcc;
+      box-shadow: 0 15px 40px rgba(0, 255, 204, 0.2);
+    }
+    
+    .skill-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+    
+    .skill-title {
+      font-size: 1.3rem;
+      color: #00ffcc;
+      margin-bottom: 1rem;
+    }
+    
+    .skill-items {
+      color: #b3b3b3;
+      line-height: 1.8;
+      font-size: 0.95rem;
+    }
+    
+    .projects-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 2rem;
+    }
+    
+    .project-card {
+      background: rgba(255, 255, 255, 0.03);
+      padding: 2rem;
+      border-radius: 15px;
+      border: 1px solid rgba(0, 255, 204, 0.2);
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+    
+    .project-card:hover {
+      transform: translateY(-10px) scale(1.02);
+      border-color: #00ffcc;
+      box-shadow: 0 20px 50px rgba(0, 255, 204, 0.3);
+    }
+    
+    .project-number {
+      font-size: 3rem;
+      font-weight: 700;
+      color: rgba(0, 255, 204, 0.2);
+      margin-bottom: 1rem;
+    }
+    
+    .project-title {
+      font-size: 1.5rem;
+      color: #00ffcc;
+      margin-bottom: 1rem;
+    }
+    
+    .project-description {
+      color: #b3b3b3;
+      line-height: 1.8;
+      margin-bottom: 1.5rem;
+    }
+    
+    .project-tech {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    
+    .tech-tag {
+      background: rgba(0, 255, 204, 0.1);
+      color: #00ffcc;
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      border: 1px solid rgba(0, 255, 204, 0.3);
+    }
+    
+    .contact-content {
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    
+    .contact-text {
+      font-size: 1.2rem;
+      color: #b3b3b3;
+      margin-bottom: 3rem;
+      line-height: 1.8;
+    }
+    
+    .contact-info {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+    
+    .contact-item {
+      background: rgba(255, 255, 255, 0.03);
+      padding: 2rem;
+      border-radius: 15px;
+      border: 1px solid rgba(0, 255, 204, 0.2);
+      transition: all 0.3s;
+    }
+    
+    .contact-item:hover {
+      transform: translateY(-5px);
+      border-color: #00ffcc;
+      box-shadow: 0 10px 30px rgba(0, 255, 204, 0.2);
+    }
+    
+    .contact-icon {
+      font-size: 2rem;
+      color: #00ffcc;
+      margin-bottom: 1rem;
+    }
+    
+    .contact-label {
+      font-size: 0.9rem;
+      color: #666;
+      margin-bottom: 0.5rem;
+    }
+    
+    .contact-value {
+      font-size: 1.1rem;
+      color: #fff;
+    }
+    
+    .contact-value a {
+      color: #00ffcc;
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+    
+    .contact-value a:hover {
+      text-decoration: underline;
+    }
+    
+    footer {
+      text-align: center;
+      padding: 3rem 5%;
+      background: rgba(10, 10, 10, 0.8);
+      border-top: 1px solid rgba(0, 255, 204, 0.1);
+    }
+    
+    footer p {
+      color: #666;
+    }
+    
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .glitch {
+        font-size: 2.5rem;
+      }
+      
+      .subtitle {
+        font-size: 1.1rem;
+      }
+      
+      .hero-description {
+        font-size: 1rem;
+      }
+      
+      .about-content {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      
+      .about-stats {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+      }
+      
+      .stat-number {
+        font-size: 2rem;
+      }
+      
+      .stat-label {
+        font-size: 0.85rem;
+      }
+      
+      .mobile-menu-btn {
+        display: block;
+      }
+      
+      .nav-links {
+        position: fixed;
+        top: 60px;
+        right: -100%;
+        width: 70%;
+        height: calc(100vh - 60px);
+        background: rgba(10, 10, 10, 0.98);
+        flex-direction: column;
+        padding: 2rem;
+        gap: 1.5rem;
+        transition: right 0.3s;
+        border-left: 1px solid rgba(0, 255, 204, 0.2);
+      }
+      
+      .nav-links.active {
+        right: 0;
+      }
+      
+      .nav-links a {
+        font-size: 1.1rem;
+      }
+      
+      section {
+        padding: 4rem 1.5rem;
+      }
+      
+      .section-title {
+        font-size: 2rem;
+      }
+      
+      .cta-buttons {
+        flex-direction: column;
+        width: 100%;
+      }
+      
+      .btn {
+        width: 100%;
+        text-align: center;
+      }
+      
+      .timeline-item {
+        padding-left: 2rem;
+      }
+      
+      .timeline-content {
+        padding: 1.5rem;
+      }
+      
+      .timeline-title {
+        font-size: 1.2rem;
+      }
+      
+      .skills-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .projects-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .contact-info {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .glitch {
+        font-size: 2rem;
+      }
+      
+      .logo {
+        font-size: 1.2rem;
+      }
+      
+      nav {
+        padding: 1rem 1rem;
+      }
+      
+      .about-stats {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="canvas3d"></canvas>
+  
+  <div class="content-wrapper">
+    <nav>
+      <div class="logo">UD</div>
+      <button class="mobile-menu-btn" id="menuBtn">☰</button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+
+    <section id="home" class="hero">
+      <div class="hero-content">
+        <h1 class="glitch" data-text="UTKARSH DUBEY">UTKARSH DUBEY</h1>
+        <p class="subtitle">Cybersecurity Expert × Flutter Developer</p>
+        <p class="hero-description">
+          Tech-driven IT professional specializing in cybersecurity, endpoint protection, and mobile development. 
+          Transforming security challenges into scalable solutions with Python automation and cloud technologies.
+        </p>
+        <div class="cta-buttons">
+          <a href="#contact" class="btn btn-primary">Get In Touch</a>
+          <a href="https://www.linkedin.com/in/utkarsh-dubey-cs" target="_blank" class="btn btn-secondary">LinkedIn Profile</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="about">
+      <div class="about-content">
+        <div>
+          <h2 class="section-title">About Me</h2>
+          <p class="about-text">
+            I'm a passionate IT professional with expertise in cybersecurity and mobile development. 
+            With a proven track record at Katyayani Organics, I've successfully implemented security 
+            frameworks protecting 500+ systems and developed mobile solutions improving team efficiency by 70%.
+          </p>
+          <p class="about-text" style="margin-top: 1.5rem;">
+            My approach combines technical excellence with practical problem-solving, whether it's 
+            automating security workflows, building Flutter applications, or implementing enterprise-level 
+            data protection measures.
+          </p>
+        </div>
+        <div class="about-stats">
+          <div class="stat-card">
+            <div class="stat-number">500+</div>
+            <div class="stat-label">Systems Protected</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">70%</div>
+            <div class="stat-label">Efficiency Boost</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">40%</div>
+            <div class="stat-label">Security Increase</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">10GB+</div>
+            <div class="stat-label">Data Secured</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="experience">
+      <div>
+        <h2 class="section-title">Work Experience</h2>
+        <div class="experience-timeline">
+          <div class="timeline-item">
+            <div class="timeline-content">
+              <h3 class="timeline-title">Cybersecurity & IT Executive</h3>
+              <div class="timeline-date">Katyayani Organics • October 2024 - Present</div>
+              <ul class="timeline-points">
+                <li>Spearheaded access control implementation across 500+ employee systems, minimizing unauthorized login attempts by 40%</li>
+                <li>Orchestrated deployment of advanced security monitoring solutions, accelerating incident detection by 60%</li>
+                <li>Engineered custom data protection frameworks, securing over 10GB of confidential organizational data</li>
+                <li>Automated monthly compliance reports using Python, saving 10+ hours per month</li>
+                <li>Secured company social media accounts implementing 2FA and activity audits</li>
+              </ul>
+            </div>
+          </div>
+          
+          <div class="timeline-item">
+            <div class="timeline-content">
+              <h3 class="timeline-title">Flutter Developer Intern</h3>
+              <div class="timeline-date">Katyayani Organics • July 2024 - October 2024</div>
+              <ul class="timeline-points">
+                <li>Developed internal mobile applications using Flutter and Firebase, improving sales team efficiency by 70%</li>
+                <li>Optimized API calls and Firebase queries, reducing data load time by 25%</li>
+                <li>Ensured 99% crash-free performance through rigorous testing across multiple devices</li>
+                <li>Designed intuitive user interfaces using Material UI guidelines</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="skills">
+      <div>
+        <h2 class="section-title">Technical Skills</h2>
+        <div class="skills-grid">
+          <div class="skill-card">
+            <div class="skill-icon">🛡️</div>
+            <h3 class="skill-title">Cybersecurity</h3>
+            <p class="skill-items">
+              Access Control • Endpoint Protection • Security Monitoring • 
+              Incident Response • Firewall Configuration • Data Protection
+            </p>
+          </div>
+          
+          <div class="skill-card">
+            <div class="skill-icon">💻</div>
+            <h3 class="skill-title">Development</h3>
+            <p class="skill-items">
+              Python • Flutter • Firebase • SQL • DBMS • 
+              API Integration • Mobile App Development
+            </p>
+          </div>
+          
+          <div class="skill-card">
+            <div class="skill-icon">☁️</div>
+            <h3 class="skill-title">Cloud & Tools</h3>
+            <p class="skill-items">
+              Google Workspace Administration • Device Management • 
+              Network Troubleshooting • Remote Support • Automation
+            </p>
+          </div>
+          
+          <div class="skill-card">
+            <div class="skill-icon">📜</div>
+            <h3 class="skill-title">Certifications</h3>
+            <p class="skill-items">
+              CCNA Certified • Cisco Networking Academy • 
+              Cybersecurity Foundations • Computer Networks Expert
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects">
+      <div>
+        <h2 class="section-title">Featured Projects</h2>
+        <div class="projects-grid">
+          <div class="project-card">
+            <div class="project-number">01</div>
+            <h3 class="project-title">Field Data Entry Mobile App</h3>
+            <p class="project-description">
+              Automated mobile application for sales teams using Flutter and Firebase, 
+              resulting in 70% efficiency improvement and 25% faster data load times.
+            </p>
+            <div class="project-tech">
+              <span class="tech-tag">Flutter</span>
+              <span class="tech-tag">Firebase</span>
+              <span class="tech-tag">Material UI</span>
+              <span class="tech-tag">API Integration</span>
+            </div>
+          </div>
+          
+          <div class="project-card">
+            <div class="project-number">02</div>
+            <h3 class="project-title">Enterprise Security Framework</h3>
+            <p class="project-description">
+              Custom data protection solution securing 10GB+ organizational data with 
+              automated compliance reporting and real-time monitoring dashboards.
+            </p>
+            <div class="project-tech">
+              <span class="tech-tag">Python</span>
+              <span class="tech-tag">Security Monitoring</span>
+              <span class="tech-tag">Automation</span>
+              <span class="tech-tag">Compliance</span>
+            </div>
+          </div>
+          
+          <div class="project-card">
+            <div class="project-number">03</div>
+            <h3 class="project-title">Google Workspace Automation</h3>
+            <p class="project-description">
+              Streamlined security audits and access governance system, boosting 
+              workflow efficiency by 25% and reducing manual oversight.
+            </p>
+            <div class="project-tech">
+              <span class="tech-tag">Google Workspace</span>
+              <span class="tech-tag">Python Scripts</span>
+              <span class="tech-tag">Access Control</span>
+              <span class="tech-tag">Automation</span>
+            </div>
+          </div>
+          
+          <div class="project-card">
+            <div class="project-number">04</div>
+            <h3 class="project-title">Social Media Security System</h3>
+            <p class="project-description">
+              Implemented comprehensive security measures for company social accounts 
+              with 2FA, access restrictions, and activity audit systems.
+            </p>
+            <div class="project-tech">
+              <span class="tech-tag">2FA</span>
+              <span class="tech-tag">Access Control</span>
+              <span class="tech-tag">Activity Monitoring</span>
+              <span class="tech-tag">Security Audits</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="contact-content">
+        <h2 class="section-title">Let's Connect</h2>
+        <p class="contact-text">
+          I'm always interested in new opportunities, collaborations, and challenging projects. 
+          Whether you want to discuss cybersecurity, mobile development, or just say hi, feel free to reach out!
+        </p>
+        
+        <div class="contact-info">
+          <div class="contact-item">
+            <div class="contact-icon">📧</div>
+            <div class="contact-label">Email</div>
+            <div class="contact-value">
+              <a href="mailto:utkarshdubey1303@gmail.com">utkarshdubey1303@gmail.com</a>
+            </div>
+          </div>
+          
+          <div class="contact-item">
+            <div class="contact-icon">📱</div>
+            <div class="contact-label">Phone</div>
+            <div class="contact-value">8358881292</div>
+          </div>
+          
+          <div class="contact-item">
+            <div class="contact-icon">📍</div>
+            <div class="contact-label">Location</div>
+            <div class="contact-value">Ashoka Garden, Bhopal</div>
+          </div>
+          
+          <div class="contact-item">
+            <div class="contact-icon">💼</div>
+            <div class="contact-label">LinkedIn</div>
+            <div class="contact-value">
+              <a href="https://www.linkedin.com/in/utkarsh-dubey-cs" target="_blank">utkarsh-dubey-cs</a>
+            </div>
+          </div>
+        </div>
+        
+        <div class="cta-buttons">
+          <a href="mailto:utkarshdubey1303@gmail.com" class="btn btn-primary">Send Email</a>
+          <a href="https://www.linkedin.com/in/utkarsh-dubey-cs" target="_blank" class="btn btn-secondary">View LinkedIn</a>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <p>&copy; 2026 Utkarsh Dubey. Crafted with passion and code.</p>
+    </footer>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script>
     // Three.js Scene
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
